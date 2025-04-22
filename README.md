@@ -48,6 +48,11 @@ Normal Transfer: curl -X POST "http://127.0.0.1:8000/transaction" -H "Content-Ty
 Fraud Transfer: curl -X POST "http://127.0.0.1:8000/transaction" -H "Content-Type: application/json" -d '{"user_id": 1, "amount": 2000, "recipient": "0959876543"}', then cancel via /ussd_response.
 Phishing SMS: curl -X POST "http://127.0.0.1:8000/check_sms" -H "Content-Type: application/json" -d '{"user_id": 1, "sms_text": "Click the link below for a job offer"}'.
 
+## ML Setup
+- Generates 10,000 synthetic transactions (~10% fraud, e.g., 972 in initial run).
+- Trains Isolation Forest model to detect anomalies (e.g., Mary’s ZMW 2,000 fraud).
+- Run: `python generate_data.py && python preprocess_data.py && python train_model.py`
+
 Future Work
 
 Interactive *115# demo (Week 6).
