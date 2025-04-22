@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 
 # Database connection
-DATABASE_URL = "postgresql://postgres:qwerty12@localhost:5432/zmobilemoney"
+DATABASE_URL = "postgresql://postgres:your_password@localhost:5432/zmobilemoney"
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
 Base = declarative_base()
