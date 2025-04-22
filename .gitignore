@@ -1,0 +1,6 @@
+zmobile_env/
+*.pyc
+__pycache__/
+*.csv
+*.pkl
+.env
