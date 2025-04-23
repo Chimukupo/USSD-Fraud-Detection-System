@@ -3,13 +3,13 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 
-# Database connection
+# ========== Database connection ==========
 DATABASE_URL = "postgresql://postgres:**password**@localhost:5432/zmobilemoney"
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
 Base = declarative_base()
 
-# Models
+# ========== Models ==========
 class User(Base):
     __tablename__ = "users"
     user_id = Column(Integer, primary_key=True)
@@ -26,10 +26,10 @@ class Transaction(Base):
     is_flagged = Column(Boolean, default=False)
     status = Column(String, default="Pending")
 
-# Create tables
+# ========== Create tables ==========
 Base.metadata.create_all(engine)
 
-# Add Mary if she doesn't exist
+# ========== Add user "Mary" ==========
 def add_mary():
     db = SessionLocal()
     try:
@@ -47,7 +47,7 @@ def add_mary():
     finally:
         db.close()
 
-# Add sample transactions for Mary
+# ========== Sample transactions ==========
 def add_sample_transactions():
     db = SessionLocal()
     try:
