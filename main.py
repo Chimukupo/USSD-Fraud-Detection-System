@@ -12,9 +12,9 @@ from mock_ussd import send_ussd
 
 app = FastAPI(title="Z Mobile Money")
 templates = Jinja2Templates(directory="templates")
-model = joblib.load("fraud_model.pkl")  # Load ML model
+model = joblib.load("fraud_model.pkl")  # ========== Load ML model ==========
 
-# Pydantic models
+# ========== Pydantic models ==========
 class TransactionCreate(BaseModel):
     user_id: int
     amount: float
@@ -28,7 +28,7 @@ class SMSCheck(BaseModel):
     user_id: int
     sms_text: str
 
-# Database dependency
+# ========== Database dependency ==========
 def get_db():
     db = SessionLocal()
     try:
@@ -46,13 +46,13 @@ async def create_transaction(tx: TransactionCreate, db: Session = Depends(get_db
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    # Rule-based fraud detection
+    # ========== Rule-based fraud detection ==========
     recent_txs = db.query(Transaction).filter(Transaction.user_id == tx.user_id).all()
     known_recipients = {t.recipient for t in recent_txs}
     is_new_recipient = tx.recipient not in known_recipients
     is_rule_flagged = tx.amount > 1000 or is_new_recipient
 
-    # ML-based fraud detection
+    # ========== ML-based fraud detection ==========
     current_hour = datetime.utcnow().hour
     test_case = pd.DataFrame([{
         "amount": tx.amount,
@@ -60,7 +60,7 @@ async def create_transaction(tx: TransactionCreate, db: Session = Depends(get_db
         "is_new_recipient": 1 if is_new_recipient else 0
     }])
     ml_prediction = model.predict(test_case)[0]
-    is_ml_flagged = bool(ml_prediction == -1)  # Convert to Python bool
+    is_ml_flagged = bool(ml_prediction == -1)  # ========== Convert to Python bool ==========
 
     # Combine: flag if either rule or ML detects fraud
     is_flagged = is_rule_flagged or is_ml_flagged
