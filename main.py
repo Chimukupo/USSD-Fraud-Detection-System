@@ -62,10 +62,10 @@ async def create_transaction(tx: TransactionCreate, db: Session = Depends(get_db
     ml_prediction = model.predict(test_case)[0]
     is_ml_flagged = bool(ml_prediction == -1)  # ========== Convert to Python bool ==========
 
-    # Combine: flag if either rule or ML detects fraud
+    # ========== Combine: flag if either rule or ML detects fraud ==========
     is_flagged = is_rule_flagged or is_ml_flagged
 
-    # Store transaction
+    # ========== Store transaction ==========
     db_tx = Transaction(
         user_id=tx.user_id,
         amount=tx.amount,
@@ -78,7 +78,7 @@ async def create_transaction(tx: TransactionCreate, db: Session = Depends(get_db
     db.commit()
     db.refresh(db_tx)
 
-    # Send USSD
+    # ========== Send USSD ==========
     if is_flagged:
         message = f"Suspicious transfer ZMW {tx.amount} to {tx.recipient}. Reply 1=Approve, 2=Cancel"
     else:
@@ -115,9 +115,9 @@ async def check_sms(sms: SMSCheck, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     scam_keywords = ["win", "prize", "urgent", "send", "claim", "job offer", "free", "award", "click"]
     sms_text = sms.sms_text.lower()
-    # Keyword check
+    # ========== Keyword check ==========
     has_keywords = any(keyword in sms_text for keyword in scam_keywords)
-    # URL check
+    # ========== URL check ==========
     has_url = bool(re.search(r'http[s]?://[^\s]+|www\.[^\s]+', sms_text))
     is_phishing = has_keywords or has_url
     if is_phishing:
