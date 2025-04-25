@@ -3,12 +3,15 @@ import time
 
 BASE_URL = "http://127.0.0.1:8000"
 
+# ========== USSD Menu ==========
 def show_menu():
-    print("\n*115# Z Mobile Money")
+    print("\nZ Mobile Money Menu")
     print("1. Send Money")
     print("2. Respond to Alerts")
     print("3. Check SMS for Phishing")
-    print("4. Exit")
+    print("4. Check Balance")
+    print("5. Manage Account")
+    print("6. Exit")
     return input("Select option: ")
 
 def send_money():
@@ -16,7 +19,7 @@ def send_money():
     amount = float(input("Enter amount (ZMW): "))
     recipient = input("Enter recipient phone: ")
     payload = {
-        "user_id": 1,  # Mary's user_id
+        "user_id": 1,  # ========== Mary's user_id ==========
         "amount": amount,
         "recipient": recipient
     }
@@ -52,7 +55,7 @@ def check_sms():
     print("\nCheck SMS for Phishing")
     sms_text = input("Enter SMS text: ")
     payload = {
-        "user_id": 1,  # Mary's user_id
+        "user_id": 1,  # ========== Mary's user_id ==========
         "sms_text": sms_text
     }
     try:
@@ -66,7 +69,11 @@ def check_sms():
         print(f"Error: {e}")
 
 def main():
-    print("Starting Z Mobile Money *115# Demo...")
+    # print("Welcome")
+    dial = input("Enter USSD Code:\n")
+    if dial != "*115#":
+        print("Invalid code.")
+        return
     while True:
         choice = show_menu()
         if choice == "1":
@@ -75,8 +82,8 @@ def main():
             respond_to_alert()
         elif choice == "3":
             check_sms()
-        elif choice == "4":
-            print("Exiting Z Mobile Money. Goodbye!")
+        elif choice == "6":
+            print("Thank you for using Z Mobile Money.")
             break
         else:
             print("Invalid option. Try again.")
