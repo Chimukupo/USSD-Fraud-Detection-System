@@ -5,7 +5,7 @@ BASE_URL = "http://127.0.0.1:8000"
 
 # ========== USSD Menu ==========
 def show_menu():
-    print("\nZ Mobile Money Menu")
+    print("\n=== Z Mobile Money ===")
     print("1. Send Money")
     print("2. Respond to Alerts")
     print("3. Check SMS for Phishing")
@@ -70,7 +70,7 @@ def check_sms():
 
 def main():
     # print("Welcome")
-    dial = input("Enter USSD Code:\n")
+    dial = input("USSD Code:\n")
     if dial != "*115#":
         print("Invalid code.")
         return
